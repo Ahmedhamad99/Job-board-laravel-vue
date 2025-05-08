@@ -14,14 +14,14 @@ class JobFactory extends Factory
     public function definition()
     {
         return [
-            'employer_id' => User::factory()->state(['role' => 'employer']), // مستخدم بصلاحية employer
+            'employer_id' => User::factory()->state(['role' => 'employer']), 
             'title' => $this->faker->jobTitle,
             'description' => $this->faker->paragraphs(3, true),
-            'skills' => json_encode($this->faker->words(5)), // مهارات كـ JSON
+            'skills' => json_encode($this->faker->words(5)), 
             'salary_min' => $this->faker->numberBetween(3000, 5000),
             'salary_max' => $this->faker->numberBetween(6000, 10000),
             'location' => $this->faker->city,
-            'category_id' => Category::factory(), // فئة عشوائية
+            'category_id' => Category::factory(),
             'status' => $this->faker->randomElement(['accepted', 'pending', 'rejected']),
             'created_at' => now(),
             'updated_at' => now(),

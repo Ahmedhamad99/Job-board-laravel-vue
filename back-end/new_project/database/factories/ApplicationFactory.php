@@ -14,9 +14,9 @@ class ApplicationFactory extends Factory
     public function definition()
     {
         return [
-            'job_id' => Job::factory(), // وظيفة عشوائية
+            'job_id' => Job::factory(), 
             'candidate_id' => User::factory()->state(['role' => 'candidate']), // مستخدم بصلاحية candidate
-            'resume' => $this->faker->url, // رابط وهمي للسيرة الذاتية
+            'resume' => $this->faker->url, 
             'contact_info' => $this->faker->email,
             'status' => $this->faker->randomElement(['pending', 'accepted', 'rejected']),
             'created_at' => now(),

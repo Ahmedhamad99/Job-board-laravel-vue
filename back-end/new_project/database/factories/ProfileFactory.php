@@ -13,10 +13,10 @@ class ProfileFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::factory(), // مستخدم عشوائي
+            'user_id' => User::factory(), 
             'bio' => $this->faker->paragraph,
             'profile_picture' => $this->faker->imageUrl(200, 200, 'people'), // صورة وهمية
-            'resume' => $this->faker->url, // رابط وهمي للسيرة الذاتية
+            'resume' => $this->faker->url, 
             'phone' => $this->faker->phoneNumber,
             'address' => $this->faker->address,
             'created_at' => now(),
