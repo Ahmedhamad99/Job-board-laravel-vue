@@ -1,43 +1,60 @@
 <template>
-  <div class="profile-container">
-    <h2>Edit Profile</h2>
-    <form class="profile-form" @submit.prevent="updateProfile">
-      <div class="form-group">
-        <label>Bio</label>
-        <input v-model="profile.bio" type="text" placeholder="Enter bio" />
-      </div>
+<form class="profile-form profile-container" @submit.prevent="updateProfile">
+  <div class="form-group">
+  <label>Name</label>
+  <input v-model="user.name" type="text" placeholder="Enter name" />
+</div>
 
-      <div class="form-group">
-        <label>Phone</label>
-        <input v-model="profile.phone" type="text" placeholder="Enter phone number" />
-      </div>
+<div class="form-group">
+  <label>Password</label>
+  <input v-model="user.password" type="password" placeholder="Enter new password (optional)" />
+</div>
 
-      <div class="form-group">
-        <label>Address</label>
-        <input v-model="profile.address" type="text" placeholder="Enter address" />
-      </div>
+<div class="form-group">
+  <label>Confirm Password</label>
+  <input v-model="user.password_confirmation" type="password" placeholder="Confirm new password" />
+</div>
 
-      <div class="form-group">
-        <label>Profile Picture</label>
-        <input type="file" @change="handleProfilePic" />
-      </div>
 
-      <div class="form-group">
-        <label>Resume</label>
-        <input type="file" @change="handleResume" />
-      </div>
-
-      <button type="submit" class="submit-btn">Save Profile</button>
-    </form>
+  <div class="form-group">
+    <label>Bio</label>
+    <input v-model="profile.bio" type="text" placeholder="Enter bio" />
   </div>
+
+  <div class="form-group">
+    <label>Phone</label>
+    <input v-model="profile.phone" type="text" placeholder="Enter phone number" />
+  </div>
+
+  <div class="form-group">
+    <label>Address</label>
+    <input v-model="profile.address" type="text" placeholder="Enter address" />
+  </div>
+
+  <div class="form-group">
+    <label>Profile Picture</label>
+    <input type="file" @change="handleProfilePic" />
+  </div>
+
+  <div class="form-group">
+    <label>Resume</label>
+    <input type="file" @change="handleResume" />
+  </div>
+
+  <button type="submit" class="submit-btn">Save Profile</button>
+</form>
 </template>
+
 
 <script>
 import axios from 'axios'
-
 export default {
   data() {
     return {
+      user: {
+        email: '',
+        password: ''
+      },
       profile: {
         bio: '',
         phone: '',
@@ -54,34 +71,48 @@ export default {
     handleResume(e) {
       this.resume = e.target.files[0]
     },
-   
-    async updateProfile() {
-      const formData = new FormData()
-      formData.append('bio', this.profile.bio)
-      formData.append('phone', this.profile.phone)
-      formData.append('address', this.profile.address)
-      if (this.profilePicture) {
-        formData.append('profile_picture', this.profilePicture)
-      }
-      if (this.resume) {
-        formData.append('resume', this.resume)
-      }
+   async updateProfile() {
+  const formData = new FormData()
+  formData.append('name', this.user.name)
+  formData.append('email', this.user.email)
+  formData.append('phone', this.profile.phone)
+  formData.append('address', this.profile.address)
+  formData.append('bio', this.profile.bio)
 
-      try {
-        await axios.post('http://localhost:8000/api/profile', formData)
-        alert('Profile updated successfully!')
-        
-        this.$router.push('/profile') 
-      } catch (err) {
-        alert('Something went wrong')
-      }
-    }
+  if (this.user.password) {
+    formData.append('password', this.user.password)
+    formData.append('password_confirmation', this.user.password_confirmation)
+  }
+
+  if (this.profilePicture) {
+    formData.append('profile_picture', this.profilePicture)
+  }
+
+  if (this.resume) {
+    formData.append('resume', this.resume)
+  }
+
+  try {
+    await axios.post('http://localhost:8000/api/profile', formData)
+    alert('Profile updated successfully!')
+    this.$router.push('/profile')
+  } catch (err) {
+    console.error(err.response.data)
+    alert('Update failed: ' + JSON.stringify(err.response.data.errors))
+  }
+}
+
   },
   async mounted() {
     const res = await axios.get('http://localhost:8000/api/profile')
-    this.profile = res.data
+
+    this.profile = res.data.profile
+    this.user.email = res.data.user.email
+    this.user.name = res.data.user.name;
+
   }
 }
+
 </script>
 
 <style scoped>

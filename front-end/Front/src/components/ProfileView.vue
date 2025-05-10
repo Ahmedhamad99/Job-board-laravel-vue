@@ -2,11 +2,16 @@
   <div class="profile-view">
     <div class="profile-card">
       <img class="profile-pic" :src="`http://localhost:8000/storage/${profile.profile_picture}`" alt="Profile Pic" />
-      <h2>My Profile</h2>
+      <h2>{{ user.name }}</h2>
+       
       <div class="profile-info">
         <div class="info-box">
           <span class="label">Bio:</span>
           <span class="value">{{ profile.bio }}</span>
+        </div>
+         <div class="info-box">
+            <span class="label">Email:</span>
+            <span class="value">{{ user.email }}</span>
         </div>
         <div class="info-box">
           <span class="label">Phone:</span>
@@ -26,21 +31,34 @@
 import axios from 'axios'
 
 export default {
-  data() {
-    return {
-      profile: {
-        phone: '',
-        address: '',
-        bio: '',
-      }
-    }
-  },
+ data() {
+  return {
+    user: {
+      name: '',
+      email: '',
+      password: '',
+      password_confirmation: ''
+    },
+    profile: {
+      phone: '',
+      address: '',
+      bio: ''
+    },
+    profilePicture: null,
+    resume: null
+  }
+},
+
   mounted() {
-    axios.get('http://localhost:8000/api/profile')
-      .then(res => {
-        this.profile = res.data
-      })
-  },
+  axios.get('http://localhost:8000/api/profile')
+    .then(res => {
+      this.user = res.data.user
+      this.profile = res.data.profile
+      this.user.name = res.data.user.name;
+
+
+    })
+},
   methods: {
     goToEdit() {
       this.$router.push('/edit-profile')

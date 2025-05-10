@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Apis;
 use App\Models\User;
+use App\Http\Requests\UpdateProfileRequest;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,44 +12,69 @@ class ProfileController extends Controller
 {
    public function show()
 {
-    // $user = User::first();
-    $user = auth()->user();
-        // return response()->json($user->profile);
+    $user = auth()->user(); 
+    // $user = User::first(); 
 
-
-    if ($user && $user->profile) {
-        return response()->json($user->profile);
+    if (!$user || !$user->profile) {
+        return response()->json(['message' => 'Profile not found'], 404);
     }
 
-    return response()->json(['message' => 'Profile not found'], 404);
+    return response()->json([
+        'user' => [
+            'name' => $user->name,
+            'email' => $user->email,
+        ],
+        'profile' => $user->profile,
+    ]);
 }
 
 
-    public function update(Request $request)
-    {
-        // $user = User::first();
-        $user = auth()->user();
 
-        $data = $request->validate([
-            'bio' => 'nullable|string',
-          
-            'phone' => 'nullable|string|max:15',
-            'address' => 'nullable|string',
-            'profile_picture' => 'nullable|image|max:5120',
-            'resume' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+ public function update(UpdateProfileRequest $request)
+{
+    // $user = User::first(); 
+        $user = auth()->user(); 
+
+
+    $data = $request->validated();
+
+    if (isset($data['password'])) {
+        $data['password'] = bcrypt($data['password']);
+        $user->update([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => $data['password'],
         ]);
-
-        if ($request->hasFile('profile_picture')) {
-            $data['profile_picture'] = $request->file('profile_picture')->store('profiles', 'public');
-        }
-
-        if ($request->hasFile('resume')) {
-            $data['resume'] = $request->file('resume')->store('resumes', 'public');
-        }
-
-        $user->profile()->updateOrCreate(['user_id' => $user->id], $data);
-
-        return response()->json(['message' => 'Profile updated successfully']);
+    } else {
+        $user->update([
+            'name' => $data['name'],
+            'email' => $data['email'],
+        ]);
     }
+
+    if ($request->hasFile('profile_picture')) {
+        $data['profile_picture'] = $request->file('profile_picture')->store('profiles', 'public');
+    }
+
+    if ($request->hasFile('resume')) {
+        $data['resume'] = $request->file('resume')->store('resumes', 'public');
+    }
+
+    $profile = $user->profile()->updateOrCreate(['user_id' => $user->id], [
+        'phone' => $data['phone'] ?? null,
+        'address' => $data['address'] ?? null,
+        'bio' => $data['bio'] ?? null,
+        'profile_picture' => $data['profile_picture'] ?? $user->profile->profile_picture ?? null,
+        'resume' => $data['resume'] ?? $user->profile->resume ?? null,
+    ]);
+
+    return response()->json([
+        'message' => 'Profile updated successfully',
+        'user' => $user,
+        'profile' => $profile,
+    ]);
+}
+
+
 }
 
