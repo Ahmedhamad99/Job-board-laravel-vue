@@ -11,10 +11,5 @@ use App\Http\Controllers\JobController;
 Route::middleware("auth:sanctum")->get("/user",function (Request $request) {
     return $request->user();
 });
-Route::group(['prefix'=>'jobs'],function(){
-    Route::get('/', [JobController::class, 'index']);
-    Route::post('/', [JobController::class, 'store']);
-    Route::post('/create', [JobController::class, 'create']);
-    Route::patch('/{id}/edit', [JobController::class, 'edit']);
-    Route::delete('/{id}', [JobController::class, 'destroy']);
-});
+
+Route::resource('jobs', JobController::class);
