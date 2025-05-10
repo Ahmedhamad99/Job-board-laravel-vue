@@ -1,0 +1,140 @@
+<template>
+  <div class="profile-container">
+    <h2>Edit Profile</h2>
+    <form class="profile-form" @submit.prevent="updateProfile">
+      <div class="form-group">
+        <label>Bio</label>
+        <input v-model="profile.bio" type="text" placeholder="Enter bio" />
+      </div>
+
+      <div class="form-group">
+        <label>Phone</label>
+        <input v-model="profile.phone" type="text" placeholder="Enter phone number" />
+      </div>
+
+      <div class="form-group">
+        <label>Address</label>
+        <input v-model="profile.address" type="text" placeholder="Enter address" />
+      </div>
+
+      <div class="form-group">
+        <label>Profile Picture</label>
+        <input type="file" @change="handleProfilePic" />
+      </div>
+
+      <div class="form-group">
+        <label>Resume</label>
+        <input type="file" @change="handleResume" />
+      </div>
+
+      <button type="submit" class="submit-btn">Save Profile</button>
+    </form>
+  </div>
+</template>
+
+<script>
+import axios from 'axios'
+
+export default {
+  data() {
+    return {
+      profile: {
+        bio: '',
+        phone: '',
+        address: ''
+      },
+      profilePicture: null,
+      resume: null
+    }
+  },
+  methods: {
+    handleProfilePic(e) {
+      this.profilePicture = e.target.files[0]
+    },
+    handleResume(e) {
+      this.resume = e.target.files[0]
+    },
+   
+    async updateProfile() {
+      const formData = new FormData()
+      formData.append('bio', this.profile.bio)
+      formData.append('phone', this.profile.phone)
+      formData.append('address', this.profile.address)
+      if (this.profilePicture) {
+        formData.append('profile_picture', this.profilePicture)
+      }
+      if (this.resume) {
+        formData.append('resume', this.resume)
+      }
+
+      try {
+        await axios.post('http://localhost:8000/api/profile', formData)
+        alert('Profile updated successfully!')
+        
+        this.$router.push('/profile') 
+      } catch (err) {
+        alert('Something went wrong')
+      }
+    }
+  },
+  async mounted() {
+    const res = await axios.get('http://localhost:8000/api/profile')
+    this.profile = res.data
+  }
+}
+</script>
+
+<style scoped>
+.profile-container {
+  max-width: 500px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: block;
+  color: #555;
+}
+
+.form-group input[type="text"],
+.form-group input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.submit-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.submit-btn:hover {
+  background: #0056b3;
+}
+</style>
