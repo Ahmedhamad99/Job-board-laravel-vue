@@ -10,18 +10,20 @@
     <table>
         <thead>
             <tr>
+                <th>Id</th>
                 <th>Name</th>
-                <th>Age</th>
-                <th>Gender</th>
+                <th>Email</th>
+                
             </tr>
             
         </thead>
         <tbody>
             @foreach($users as $item)
                 <tr>
+                    <td>{{$item->id}}</td>
                     <td>{{$item->name}}</td>
-                    <td>{{$item->age}}</td>
-                    <td>{{$item->gender}}</td>
+                    <td>{{$item->email}}</td>
+                    
                 </tr>
             @endforeach
         </tbody>

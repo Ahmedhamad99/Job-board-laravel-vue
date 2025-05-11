@@ -9,4 +9,4 @@ Route::get('/', function () {
 });
 
 
-Route::get('/admin',[AdminController::class,"index"])->name('admin.index');
+// Route::get('/admin',[AdminController::class,"index"])->name('admin.index');
