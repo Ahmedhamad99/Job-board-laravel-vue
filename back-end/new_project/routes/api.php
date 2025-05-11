@@ -13,9 +13,9 @@ Route::middleware("auth:sanctum")->get("/user",function (Request $request) {
 use App\Http\Controllers\Apis\ProfileController;
 
 // ----sara
-Route::middleware('auth:sanctum')->group(function () {
+ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::post('/profile', [ProfileController::class, 'update']);
-});
+ });
 
 
