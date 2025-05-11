@@ -12,8 +12,8 @@ class ProfileController extends Controller
 {
    public function show()
 {
-    $user = auth()->user(); 
-    // $user = User::first(); 
+     $user = auth()->user(); 
+    //$user = User::first(); 
 
     if (!$user || !$user->profile) {
         return response()->json(['message' => 'Profile not found'], 404);

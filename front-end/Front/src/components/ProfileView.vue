@@ -1,17 +1,26 @@
 <template>
-  <div class="profile-view">
+  <div class="profile-container">
+    <div class="right-section">
+      <img class="side-image" src="../assets/imgs/user-access.png" alt="Profile Art" />
+      <h2>Welcome to Your Space</h2>
+      <p>Manage your personal information, update your bio, and make your profile stand out to employers.</p>
+    </div>
+
     <div class="profile-card">
+      <h2>MY PROFILE</h2>
+      <h4>My Details</h4>
       <img class="profile-pic" :src="`http://localhost:8000/storage/${profile.profile_picture}`" alt="Profile Pic" />
       <h2>{{ user.name }}</h2>
-       
+      <h5>Basic Details</h5>
+
       <div class="profile-info">
         <div class="info-box">
           <span class="label">Bio:</span>
           <span class="value">{{ profile.bio }}</span>
         </div>
-         <div class="info-box">
-            <span class="label">Email:</span>
-            <span class="value">{{ user.email }}</span>
+        <div class="info-box">
+          <span class="label">Email:</span>
+          <span class="value">{{ user.email }}</span>
         </div>
         <div class="info-box">
           <span class="label">Phone:</span>
@@ -22,10 +31,12 @@
           <span class="value">{{ profile.address }}</span>
         </div>
       </div>
+
       <button @click="goToEdit" class="edit-btn">Edit Profile</button>
     </div>
   </div>
 </template>
+
 
 <script>
 import axios from 'axios'
@@ -68,43 +79,72 @@ export default {
 </script>
 
 <style scoped>
-.profile-view {
+*{
+  padding:0px;
+  margin:0px;
+ 
+}
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.profile-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-wrap: wrap;
   min-height: 100vh;
   background-color: #f3f7fa;
-  padding: 20px;
+  padding: 40px;
+  gap: 40px;
+  justify-content: center;
 }
 
-.profile-card {
-  background: white;
+.right-section {
+  flex: 1;
+  max-width: 400px;
+  background-color: #fff;
+  padding: 30px;
   border-radius: 15px;
-  padding: 40px 30px;
-  width: 100%;
-  max-width: 600px;
-  text-align: left;
-  position: relative;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
-
 .profile-pic {
   width: 150px;
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  margin: 0 auto 30px;
+  margin-top: 20px;
   display: block;
   transition: transform 0.4s ease-in-out;
+  margin-left: auto;
+  margin-right: auto;
 }
+
 .profile-pic:hover {
   transform: scale(1.05);
 }
 
-h2 {
+.profile-card h2 {
   font-size: 26px;
-  margin-bottom: 25px;
-  color: #333;
+  margin-bottom: 15px;
+  color: rgb(3, 37, 65);
+  font-family: 'Poppins', sans-serif;
   text-align: center;
+}
+
+h4 {
+  border-bottom: 2px solid rgb(3, 37, 65);
+  color: rgb(3, 37, 65);
+  width: fit-content;
+  font-family: 'Poppins', sans-serif;
+  margin: 0 auto 15px;
+}
+
+h5 {
+  font-size: 22px;
+  text-align: center;
+  color: rgb(3, 37, 65);
+  margin: 20px 0;
+  font-family: 'Poppins', sans-serif;
 }
 
 .profile-info {
@@ -120,12 +160,14 @@ h2 {
   padding: 15px 20px;
   display: flex;
   flex-direction: column;
+  font-family: 'Poppins', sans-serif;
 }
 
 .label {
-  font-weight: bold;
-  color: #444;
+  font-size: 18px;
+  color: rgb(3, 37, 65);
   margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .value {
@@ -134,7 +176,7 @@ h2 {
 }
 
 .edit-btn {
-  background-color: #007bff;
+  background-color: rgb(3, 37, 65);
   color: white;
   padding: 12px 25px;
   border: none;
@@ -151,4 +193,52 @@ h2 {
 .edit-btn:hover {
   background-color: #0056b3;
 }
+
+
+.right-section h2 {
+  color: #032541;
+  margin-top: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.right-section p {
+  color: #555;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.side-image {
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.profile-card {
+  flex: 2;
+  background: white;
+  border-radius: 15px;
+  padding: 40px 30px;
+  max-width: 600px;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  .right-section,
+  .profile-card {
+    max-width: 100%;
+  }
+
+  .edit-btn {
+    position: static;
+    transform: none;
+    margin-top: 20px;
+  }
+}
+
 </style>

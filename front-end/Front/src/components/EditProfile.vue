@@ -1,49 +1,62 @@
 <template>
-<form class="profile-form profile-container" @submit.prevent="updateProfile">
-  <div class="form-group">
-  <label>Name</label>
-  <input v-model="user.name" type="text" placeholder="Enter name" />
+  <div class="profile-container">
+    <div class="left-section">
+      <h2>Edit Profile</h2>
+      <form class="profile-form" @submit.prevent="updateProfile">
+        <div class="form-group">
+          <label>Name</label>
+          <input v-model="user.name" type="text" placeholder="Enter name" />
+        </div>
+
+        <div class="form-group">
+          <label>Bio</label>
+          <input v-model="profile.bio" type="text" placeholder="Enter bio" />
+        </div>
+
+        <div class="form-group">
+          <label>Phone</label>
+          <input v-model="profile.phone" type="text" placeholder="Enter phone number" />
+        </div>
+
+        <div class="form-group">
+          <label>Address</label>
+          <input v-model="profile.address" type="text" placeholder="Enter address" />
+        </div>
+
+        <div class="form-group">
+          <label>Profile Picture</label>
+          <input type="file" @change="handleProfilePic" />
+        </div>
+
+        <div class="form-group">
+          <label>Resume</label>
+          <input type="file" @change="handleResume" />
+        </div>
+          <div class="form-group">
+          <label>Password</label>
+          <input v-model="user.password" type="password" placeholder="Enter new password (optional)" />
+        </div>
+
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input v-model="user.password_confirmation" type="password" placeholder="Confirm new password" />
+        </div>
+
+        <button type="submit" class="submit-btn">Save Profile</button>
+      </form>
+    </div>
+
+   <div class="right-section">
+  <div class="branding-box">
+    <img src="../assets/imgs/edit.webp" alt="Platform Illustration" class="platform-image" />
+    <h2>Manage Your Profile Securely</h2>
+    <p>Keep your information up-to-date to get the best job matches tailored for you.</p>
+  </div>
 </div>
 
-<div class="form-group">
-  <label>Password</label>
-  <input v-model="user.password" type="password" placeholder="Enter new password (optional)" />
-</div>
-
-<div class="form-group">
-  <label>Confirm Password</label>
-  <input v-model="user.password_confirmation" type="password" placeholder="Confirm new password" />
-</div>
-
-
-  <div class="form-group">
-    <label>Bio</label>
-    <input v-model="profile.bio" type="text" placeholder="Enter bio" />
   </div>
-
-  <div class="form-group">
-    <label>Phone</label>
-    <input v-model="profile.phone" type="text" placeholder="Enter phone number" />
-  </div>
-
-  <div class="form-group">
-    <label>Address</label>
-    <input v-model="profile.address" type="text" placeholder="Enter address" />
-  </div>
-
-  <div class="form-group">
-    <label>Profile Picture</label>
-    <input type="file" @change="handleProfilePic" />
-  </div>
-
-  <div class="form-group">
-    <label>Resume</label>
-    <input type="file" @change="handleResume" />
-  </div>
-
-  <button type="submit" class="submit-btn">Save Profile</button>
-</form>
 </template>
+
 
 
 <script>
@@ -117,19 +130,40 @@ export default {
 
 <style scoped>
 .profile-container {
-  max-width: 500px;
+  max-width: 1000px;
   margin: 40px auto;
+  display: flex;
+  gap: 30px;
+  padding: 30px;
+  background-color: #f7f7f7;
+  border-radius: 16px;
+  font-family: 'Segoe UI', sans-serif;
+  flex-wrap: wrap;
+}
+
+.left-section {
+  font-family: 'Poppins', sans-serif;
+  flex: 1;
   background: #fff;
-  padding: 30px 40px;
+  padding: 30px;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', sans-serif;
+}
+
+.right-section {
+  flex: 1;
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+    font-family: 'Poppins', sans-serif;
 }
 
 h2 {
-  text-align: center;
   margin-bottom: 25px;
-  color: #333;
+  color: rgb(3, 37, 65);
+  font-size: 22px;
 }
 
 .profile-form {
@@ -142,11 +176,10 @@ h2 {
   font-weight: 600;
   margin-bottom: 5px;
   display: block;
-  color: #555;
+  color:rgb(3, 37, 65);
 }
 
-.form-group input[type="text"],
-.form-group input[type="file"] {
+.form-group input {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
@@ -155,7 +188,7 @@ h2 {
 }
 
 .submit-btn {
-  background: #007bff;
+  background:rgb(3, 37, 65);
   color: white;
   border: none;
   padding: 12px;
@@ -168,4 +201,30 @@ h2 {
 .submit-btn:hover {
   background: #0056b3;
 }
+.right-section {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-left: 1px solid #ddd;
+  font-weight:bold;
+}
+
+
+.platform-image {
+  width: 100%;
+  max-width: 200px;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+}
+
+
+@media (max-width: 768px) {
+  .profile-container {
+    flex-direction: column;
+  }
+  .right-section {
+    order: -1;
+  }
+}
 </style>
+
