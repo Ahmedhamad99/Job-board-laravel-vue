@@ -58,7 +58,7 @@ class JobController
         $query->orderBy($sort, $order);
 
         // loads employer data of job (like populate)
-        $jobs = $query->with(['employer', 'category'])->paginate(10);
+        $jobs = $query->with(['employer', 'category'])->paginate(9);
 
         // response with json
         return response()->json([
