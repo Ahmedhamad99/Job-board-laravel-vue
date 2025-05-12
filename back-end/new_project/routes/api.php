@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Apis\Auth\RegisterController;
 use App\Http\Controllers\Apis\Auth\EmailVerficationController;
 use App\Http\Controllers\Apis\Auth\LoginController;
+
 use App\Http\Controllers\AuthRegister;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Middleware;
@@ -15,5 +16,10 @@ Route::middleware("auth:sanctum")->get("/user",function (Request $request) {
 });
 Route::post("/register",[AuthRegister::class,'store']);
 Route::post("/login",[AuthRegister::class,'login']);
+=======
+Route::middleware("auth:sanctum")->get("/user",function (Request $request) {
+    return $request->user();
+});
+
 
 
