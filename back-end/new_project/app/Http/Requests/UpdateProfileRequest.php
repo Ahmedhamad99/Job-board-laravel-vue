@@ -25,9 +25,9 @@ class UpdateProfileRequest extends FormRequest
     return [
         'name' => 'sometimes|string|max:255',
         'email' => 'sometimes|email|max:255|unique:users,email,' . $this->user()->id,
-        'phone' => 'sometimes|string|max:255|unique:users,phone,' . $this->user()->id,
-      // 'email' => 'sometimes|email|max:255',
-      // 'phone' => 'sometimes|string|max:255',
+       'phone' => 'sometimes|string|max:255|unique:users,phone,' . $this->user()->id,
+       //'email' => 'sometimes|email|max:255',
+       //'phone' => 'sometimes|string|max:255',
 
         'profile_picture' => 'nullable|image|max:1024',
         'resume' => 'nullable|file|max:1024',

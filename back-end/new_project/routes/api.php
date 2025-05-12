@@ -16,6 +16,6 @@ use App\Http\Controllers\Apis\ProfileController;
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::post('/profile', [ProfileController::class, 'update']);
- });
+});
 
 

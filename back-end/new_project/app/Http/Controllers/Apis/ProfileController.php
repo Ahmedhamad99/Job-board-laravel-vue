@@ -13,7 +13,10 @@ class ProfileController extends Controller
    public function show()
 {
      $user = auth()->user(); 
-    //$user = User::first(); 
+    // $user = User::first(); 
+
+    // $user = User::skip(2)->first();
+
 
     if (!$user || !$user->profile) {
         return response()->json(['message' => 'Profile not found'], 404);
@@ -23,6 +26,7 @@ class ProfileController extends Controller
         'user' => [
             'name' => $user->name,
             'email' => $user->email,
+            'role' => $user->role,
         ],
         'profile' => $user->profile,
     ]);
@@ -32,8 +36,8 @@ class ProfileController extends Controller
 
  public function update(UpdateProfileRequest $request)
 {
-    // $user = User::first(); 
-        $user = auth()->user(); 
+    $user = User::first(); 
+        // $user = auth()->user(); 
 
 
     $data = $request->validated();

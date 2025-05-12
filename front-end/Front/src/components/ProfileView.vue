@@ -3,7 +3,13 @@
     <div class="right-section">
       <img class="side-image" src="../assets/imgs/user-access.png" alt="Profile Art" />
       <h2>Welcome to Your Space</h2>
-      <p>Manage your personal information, update your bio, and make your profile stand out to employers.</p>
+      <p>Manage your personal information, update your bio, and make your profile professional.</p>
+       <div v-if="user.role === 'employer'"  class="employer-section" @click="goToJobs">
+              <button class="special-btn">Show My Jobs</button>
+      </div>
+      <div v-if="user.role === 'admin'"  class="employer-section" @click="goToDashboard">
+              <button class="special-btn">Show My Dashboard</button>
+      </div>
     </div>
 
     <div class="profile-card">
@@ -33,6 +39,8 @@
       </div>
 
       <button @click="goToEdit" class="edit-btn">Edit Profile</button>
+           
+
     </div>
   </div>
 </template>
@@ -47,6 +55,7 @@ export default {
     user: {
       name: '',
       email: '',
+      role: '',
       password: '',
       password_confirmation: ''
     },
@@ -72,8 +81,14 @@ export default {
 },
   methods: {
     goToEdit() {
-      this.$router.push('/edit-profile')
-    }
+      this.$router.push('/edit-profile');
+    },
+    goToJobs() {
+    this.$router.push('/profile/jobs');
+  },
+  goToDashboard(){
+   this.$router.push('/dashboard');
+  }
   }
 }
 </script>
@@ -221,6 +236,21 @@ h5 {
   padding: 40px 30px;
   max-width: 600px;
   position: relative;
+}
+
+.employer-section {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.special-btn {
+  background-color: #032541;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 @media (max-width: 768px) {
