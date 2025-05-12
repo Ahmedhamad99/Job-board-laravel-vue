@@ -26,8 +26,8 @@ class JobRequest extends FormRequest
             'title'=>['required','string','max:255', 'min:10'],
             'description'=>['required','string','max:255', 'min:15'],
             'skills'=> ['string'],
-            'salary_min'=>['decimal:10,2'],
-            'salary_max'=>['decimal:10,2'],
+            'salary_min' => ['nullable'],
+            'salary_max' => ['nullable'],
             'location'=>['required','string','max:255', 'min:4'],
             'category_id'=>['required'],
         ];

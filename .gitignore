@@ -1,3 +1,4 @@
 back-end/new_project/.env
 back-end/new_project/vendor
 front-end/Front/node_modules
+front-end/Front/.env
