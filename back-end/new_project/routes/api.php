@@ -19,11 +19,12 @@ Route::group(["prefix" => "admin"], function () {
         Route::put("/update/{id}", [AdminController::class, "updateJob"]);
         Route::delete("/delete/{id}", [AdminController::class, "deleteJob"]);
         Route::patch("/rejected/{id}", [AdminController::class, "rejectedJob"]);
+        Route::get("/accepted", [AdminController::class, "acceptedJobs"]);
+
         Route::patch("/accepted/{id}", [AdminController::class, "acceptedJob"]);
         Route::get("/search", [AdminController::class, "searchJob"]);
         Route::get("/pending", [AdminController::class, "pendingJobs"]);
         Route::get("/rejected", [AdminController::class, "rejectedJobs"]);
-        Route::get("/accepted", [AdminController::class, "acceptedJobs"]);
 
     });
 
