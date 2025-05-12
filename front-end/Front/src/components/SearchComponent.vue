@@ -3,6 +3,10 @@ import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import instance from "@/axios";
 
+function goToApplyPage(jobId) {
+  this.$router.push({ name: "applyJob", params: { jobId } });
+}
+
 // onMounted >> get query params according to url >> search function (get search inputs and page and fetch)
 // use search >> search function (get search inputs and page and fetch)
 // reset >> reset inputs and search function (get search inputs and page and fetch)
@@ -106,6 +110,8 @@ onMounted(async () => {
 </script>
 
 <template>
+  <div class="container-fluid gradient-bg-light">
+
   <div class="container w-75 mt-5 mb-0">
     <!-- Search Part -->
     <form @submit.prevent="search(1)">
@@ -182,93 +188,109 @@ onMounted(async () => {
     <!-- <p class="text-center mt-4 alert alert-light">{{ filters }}</p> -->
 
     <!-- Jobs Part (should be replaced) -->
-    <div class="row my-5">
-      <div v-for="job in jobs" :key="job.id" class="col-4">
-        <div class="shadow-sm p-4 rounded-5 my-2 position-relative">
-          <small class="small-size position-absolute date-container">
-            {{ new Date(job.created_at).toLocaleDateString() }}
-          </small>
-          <div class="d-flex justify-content-center align-items-center">
-            <div class="pt-2">
-              <i class="fa-solid fa-briefcase fs-5 pe-3 text-primary"></i>
-              <h6 class="d-inline-block text-primary">{{ job.title }}</h6>
+    <section class="job-section py-5">
+      <div class="container">
+        <!-- Job Cards Grid -->
+        <div class="row g-4">
+          <div
+            v-for="(job, index) in jobs"
+            :key="job.id"
+            class="col-xl-4 col-lg-4 col-md-6 col-sm-12"
+          >
+            <div
+              class="card job-card h-100 shadow-sm animate-fade-up"
+              :style="{ animationDelay: `${index * 0.1}s` }"
+            >
+              <!-- Ribbon -->
+              <div class="ribbon"></div>
+
+              <div class="card-body d-flex flex-column p-4">
+                <!-- Header -->
+                <div class="d-flex align-items-center mb-3">
+                  <div class="icon-circle me-3">
+                    <i class="bi bi-briefcase-fill text-white"></i>
+                  </div>
+                  <h5 class="mb-0 fw-semibold text-dark">{{ job.title }}</h5>
+                </div>
+
+                <!-- Description -->
+                <p class="text-muted small mb-3">{{ job.description.substring(0,50) }} ...</p>
+
+                <!-- Info Badges -->
+                <div class="mb-3 d-flex flex-wrap gap-2">
+                  <span class="badge bg-light text-dark border"
+                    >📍 {{ job.location }}</span
+                  >
+                  <span class="badge bg-light text-dark border"
+                    >💰 ${{ job.salary_min }} - ${{ job.salary_max }}</span
+                  >
+                </div>
+
+                <!-- Skills -->
+                <div class="mb-4">
+                  <strong class="text-dark">Skills:</strong>
+                  <div class="d-flex flex-wrap mt-2 gap-2">
+                    <span
+                      v-for="skill in JSON.parse(job.skills)"
+                      :key="skill"
+                      class="badge skill-badge"
+                    >
+                      <i class="bi bi-check-circle-fill me-1"></i> {{ skill }}
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Apply Button -->
+                <button
+                  @click="goToApplyPage(job.id)"
+                  class="btn gradient-btn text-white fw-bold rounded-pill mt-auto w-100"
+                >
+                  <i class="bi bi-send-fill me-2"></i> Apply Now
+                </button>
+              </div>
             </div>
           </div>
-          <div class="text-muted job-desc mb-2 desc-container">
-            {{ job.description.substring(0, 80) }} ...
-          </div>
-          <span class="badge bg-light text-dark rounded-5 me-2"
-            ><i class="fa-solid fa-location-dot pe-2"></i
-            >{{ job.location }}</span
-          >
-          <span class="badge bg-light text-dark rounded-5">
-            <i class="fa-solid fa-sack-dollar pe-2"></i>
-            ${{ job.salary_min || "N/A" }} - ${{ job.salary_max || "N/A" }}
-          </span>
-          <div class="pt-3 pb-2">
-            <strong>Skills:</strong>
-          </div>
-          <div class="skills-container">
-            <span
-              v-for="(skill, index) in JSON.parse(job.skills)"
-              :key="index"
-              class="badge bg-light text-dark rounded-5 me-2"
-              >{{ skill }}</span
-            >
-          </div>
-          <div class="d-flex justify-content-center align-items-center">
-            <button class="btn btn-primary rounded-5 w-100 py-1 mt-4 mx-2">
-              Apply Now
-            </button>
-            <button class="btn btn-primary rounded-5 w-100 py-1 mt-4 mx-2">
-              See More
-            </button>
-          </div>
-
-          <!-- <small class="text-muted d-block pb-2"
-            >created by : {{ job.employer.name }}</small
-          > -->
-          <!-- <p>
-            <strong>Category:</strong>
-            {{ job.category.name || "Not specified" }}
-          </p> -->
-          <!-- <router-link :to="`/jobs/${job.id}`" class="details-link">View Details</router-link> -->
         </div>
       </div>
-      <div class="d-flex justify-content-center align-items-center">
-        <button
-          :disabled="pagination.current_page === 1"
-          class="btn btn-primary mx-2"
-          @click="search(pagination.current_page - 1)"
-        >
-          <i class="fa-solid fa-arrow-left"></i>
-        </button>
-        <button
-          v-for="page in pagination.pages_no"
-          :key="page"
-          :class="[
-            `btn mx-2`,
-            pagination.current_page == page
-              ? `btn-page text-white`
-              : `btn-primary`,
-          ]"
-          @click="search(page)"
-        >
-          {{ page }}
-        </button>
-        <button
-          :disabled="pagination.current_page === pagination.last_page"
-          class="btn btn-primary mx-2"
-          @click="search(pagination.current_page + 1)"
-        >
-          <i class="fa-solid fa-arrow-right"></i>
-        </button>
-      </div>
+    </section>
+    <div class="d-flex justify-content-center align-items-center">
+      <button
+        :disabled="pagination.current_page === 1"
+        class="btn btn-primary mx-2"
+        @click="search(pagination.current_page - 1)"
+      >
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+      <button
+        v-for="page in pagination.pages_no"
+        :key="page"
+        :class="[
+          `btn mx-2`,
+          pagination.current_page == page
+            ? `btn-page text-white`
+            : `btn-primary`,
+        ]"
+        @click="search(page)"
+      >
+        {{ page }}
+      </button>
+      <button
+        :disabled="pagination.current_page === pagination.last_page"
+        class="btn btn-primary mx-2"
+        @click="search(pagination.current_page + 1)"
+      >
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
     </div>
+  </div>
   </div>
 </template>
 
 <style scoped>
+.gradient-bg-light {
+  background: linear-gradient(to bottom right, #f8f9fc, #ffffff);
+}
+
 .main-input {
   background: linear-gradient(to right, #007bff, #ff4d4d);
   border-radius: 50px;
@@ -324,28 +346,6 @@ select option {
   background: linear-gradient(to right, #ff4d4d, #007bff);
 }
 
-.job-desc {
-  font-size: 0.85rem;
-}
-
-.small-size {
-  font-size: 0.7rem;
-}
-
-.desc-container {
-  height: 60px;
-}
-
-.skills-container {
-  height: 40px;
-}
-
-.date-container {
-  top: 2%;
-  right: 4%;
-  color: rgba(128, 128, 128, 0.837);
-}
-
 .btn-page {
   background-color: #0062cb;
   transition: 0.3s;
@@ -354,5 +354,110 @@ select option {
 
 .btn-page:hover {
   background-color: #0062cb;
+}
+
+.fancy-heading {
+  background: linear-gradient(135deg, #667eea, #77707e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-btn {
+  background: linear-gradient(to right, #667eea, #764ba2);
+  border: none;
+  transition: all 0.3s ease;
+}
+.gradient-btn:hover {
+  transform: scale(1.04);
+  opacity: 0.95;
+  box-shadow: 0 8px 18px rgba(67, 84, 161, 0.966);
+}
+
+.job-card {
+  border-radius: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.job-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.ribbon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: linear-gradient(to right, #151f15, #ff7eb3);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 6px 14px;
+  border-bottom-left-radius: 12px;
+  z-index: 2;
+}
+
+.icon-circle {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(to right, #5c6aaa, #764ba2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.skill-badge {
+  background: linear-gradient(to right, #100d14, #2575fc);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 50rem;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  box-shadow: 0 3px 6px rgba(172, 3, 96, 0.945);
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.6s ease forwards;
+  opacity: 0;
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-title {
+  animation: slideIn 0.7s ease-out;
+}
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-sub {
+  animation: fadeIn 1.2s ease;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 </style>

@@ -17,7 +17,7 @@ class JobFactory extends Factory
             'employer_id' => User::factory()->state(['role' => 'employer']),
             // 'title' => $this->faker->jobTitle,
             'title' => implode(' ', $this->faker->words(3)),
-            'description' => $this->faker->paragraphs(3, true),
+            'description' => $this->faker->paragraphs(1, true),
             'skills' => json_encode($this->faker->words(5)),
             'salary_min' => $this->faker->numberBetween(3000, 5000),
             'salary_max' => $this->faker->numberBetween(6000, 10000),
