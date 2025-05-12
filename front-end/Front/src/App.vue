@@ -1,47 +1,40 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-import Bodycomponent from './components/Bodycomponent.vue';
-import { useCounterStore } from './stores/CounterStore';
-import Header from './components/Header.vue';
-const counter = useCounterStore();
-</script>
-
 <template>
   <div>
-    
-    <p>Coun :{{ counter.count }}</p>
-    <button class="btn btn-primary" @click="counter.increment">+</button>
-    <button class="btn btn-danger" @click="counter.decrement">-</button>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Admin Dashboard</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <router-link class="nav-link" to="/dashboard">Dashboard</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/alljobs">All Jobs</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/users">Users</router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container mt-4">
+      <router-view></router-view>
+    </div>
   </div>
-  
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
+<script>
+export default {
+  name: 'App'
 }
+</script>
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+<style>
+.container {
+  max-width: 1200px;
 }
 </style>
