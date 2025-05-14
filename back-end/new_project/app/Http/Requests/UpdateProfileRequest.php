@@ -21,18 +21,18 @@ class UpdateProfileRequest extends FormRequest
      */
     public function rules(): array
     {
+        $profileId = $this->user()->profile ? $this->user()->profile->id : 0;
+        
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,'.$this->user()->id,
-            'phone' => 'required|string|max:255|unique:users,phone,'.$this->user()->id,
+            'phone' => 'required|string|max:255|unique:profiles,phone,'.$profileId,
             'profile_picture'=>'nullable|image|max:1024',
             'resume'=>'nullable|file|max:1024',
             'password'=>'nullable|confirmed|min:6',
             'password_confirmation'=>'nullable|min:6',
             'address'=>'nullable|string|max:255',
             'bio'=>'nullable|string|max:255',
-
-           
         ];
     }
 }
