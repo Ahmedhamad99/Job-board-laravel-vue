@@ -1,5 +1,5 @@
 <template>
-  <div class="container d-flex justify-content-center align-items-center min-vh-100 position-relative">
+  <div class="container m-5  d-flex justify-content-center align-items-center min-vh-100 position-relative">
     <div class="card shadow-lg p-4 w-100 position-relative" style="max-width: 500px;">
       <!-- الرسائل الناجحة أو الفاشلة -->
       <div v-if="successMessage" class="toast-custom toast-success">
@@ -92,7 +92,7 @@ export default {
     },
     async handleRegister() {
       try {
-        const res = await axios.post('http://localhost:8000/api/register', this.form);
+        const res = await axios.post('/api/register', this.form);
         this.successMessage = res.data.message || 'Registration successful';
         this.errorMessage = '';
         this.toggleForm();
@@ -105,11 +105,12 @@ export default {
     },
     async handleLogin() {
       try {
-        const res = await axios.post('http://localhost:8000/api/login', {
+        const res = await axios.post('/api/login', {
           email: this.form.email,
           password: this.form.password,
         });
         localStorage.setItem('token', res.data.token);
+        localStorage.setItem('userRole', res.data.user.role);
         this.successMessage = res.data.message || 'Login successful';
         this.errorMessage = '';
 
